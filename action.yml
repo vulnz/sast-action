@@ -1,5 +1,5 @@
 name: 'Insomnia SAST'
-description: 'Free, fast SAST + SCA + secret scanning for CI. Native AST taint across 16 languages, SARIF for the GitHub Security tab. No external tools.'
+description: 'Free, fast SAST + SCA + secret scanning for CI. AST taint across 16 languages, SARIF to the GitHub Security tab.'
 author: 'CQR Cybersecurity LLC (insom.ai)'
 
 branding:
