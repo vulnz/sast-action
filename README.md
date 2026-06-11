@@ -55,8 +55,8 @@ jobs:
           fail-on: high
 ```
 
-The action downloads the OS-matched engine, scans the repo, fails the build on high-severity
-findings, uploads SARIF to the Security tab, and saves the HTML/JSON report as an artifact.
+The action installs the engine with `pip install sast`, scans the repo, fails the build on
+high-severity findings, uploads SARIF to the Security tab, and saves the HTML/JSON report as an artifact.
 
 > Prefer to build your pipeline visually? Generate the YAML with the
 > **[Pipeline Builder → insom.ai/en/sdlc](https://insom.ai/en/sdlc)**.
@@ -128,7 +128,7 @@ One step instead of five tools — all on your runner, nothing leaves CI:
 | Terminal | `pip install sast` · `brew install vulnz/sast/sast` · `apt-get install sast` |
 | Editor | [VS Code · JetBrains · Visual Studio](https://insom.ai/en/plugin) |
 
-Runs on `ubuntu-*`, `macos-*` and `windows-*` runners.
+Runs on `ubuntu-*`, `macos-*` and `windows-*` runners — the engine is installed via `pip install sast`.
 
 ---
 

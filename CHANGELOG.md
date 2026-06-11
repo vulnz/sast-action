@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.11
+- Action renamed to **SAST** on the GitHub Marketplace.
+- Engine now installed via `pip install sast` (replaces the direct binary download).
+- Crescent **moon** brand icon (purple).
+
 ## v1.0.1
 - Brand icon set to the Insomnia crescent **moon** (purple) on the Marketplace card.
 - Decluttered README (compact badges, tighter comparison table).

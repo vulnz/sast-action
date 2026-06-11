@@ -1,4 +1,4 @@
-name: 'Insomnia SAST'
+name: 'SAST'
 description: 'Free, fast SAST + SCA + secret scanning for CI. AST taint across 16 languages, SARIF to the GitHub Security tab.'
 author: 'CQR Cybersecurity LLC (insom.ai)'
 
@@ -47,7 +47,7 @@ inputs:
     required: false
     default: 'false'
   version:
-    description: 'Engine channel/version to download (default: latest).'
+    description: 'sast pip package version to install (default: latest).'
     required: false
     default: 'latest'
   args:
@@ -66,29 +66,25 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: Install Insomnia SAST engine
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install SAST (pip)
       shell: bash
       run: |
         set -euo pipefail
-        case "${RUNNER_OS}" in
-          Linux)   PLAT=linux;   BIN="$RUNNER_TEMP/sast" ;;
-          macOS)   PLAT=macos;   BIN="$RUNNER_TEMP/sast" ;;
-          Windows) PLAT=windows; BIN="$RUNNER_TEMP/sast.exe" ;;
-          *) echo "::error::Unsupported runner OS: ${RUNNER_OS}"; exit 1 ;;
-        esac
-        CHANNEL="${{ inputs.version }}"
-        if [ "$CHANNEL" = "latest" ] || [ -z "$CHANNEL" ]; then
-          URL="https://insom.ai/latest/sast/${PLAT}"
+        python -m pip install --upgrade pip >/dev/null
+        VER="${{ inputs.version }}"
+        if [ "$VER" = "latest" ] || [ -z "$VER" ]; then
+          python -m pip install --upgrade sast
         else
-          URL="https://insom.ai/latest/sast/${PLAT}?version=${CHANNEL}"
+          python -m pip install "sast==$VER"
         fi
-        echo "Downloading Insomnia SAST engine ($PLAT) from $URL"
-        curl -fsSL --retry 3 "$URL" -o "$BIN"
-        chmod +x "$BIN" || true
-        echo "SAST_BIN=$BIN" >> "$GITHUB_ENV"
-        "$BIN" --version || true
+        sast --version
 
-    - name: Run Insomnia SAST
+    - name: Run SAST
       id: scan
       shell: bash
       run: |
@@ -107,7 +103,7 @@ runs:
 
         echo "+ sast ${ARGS[*]}"
         set +e
-        "$SAST_BIN" "${ARGS[@]}"
+        sast "${ARGS[@]}"
         CODE=$?
         set -e
         echo "exit-code=$CODE" >> "$GITHUB_OUTPUT"
