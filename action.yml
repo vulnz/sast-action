@@ -3,7 +3,7 @@ description: 'Free, fast SAST + SCA + secret scanning for CI. AST taint across 1
 author: 'CQR Cybersecurity LLC (insom.ai)'
 
 branding:
-  icon: 'shield'
+  icon: 'moon'
   color: 'purple'
 
 inputs:
