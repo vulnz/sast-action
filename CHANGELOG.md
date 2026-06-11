@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.1
+- Brand icon set to the Insomnia crescent **moon** (purple) on the Marketplace card.
+- Decluttered README (compact badges, tighter comparison table).
+
 ## v1.0.0
 - Initial release of the Insomnia SAST GitHub Action.
 - Composite action: downloads the OS-matched SAST engine from insom.ai, scans,
