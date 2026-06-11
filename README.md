@@ -4,15 +4,15 @@
   </a>
 </p>
 
-<h1 align="center">Insomnia SAST — GitHub Action</h1>
+<h1 align="center">SAST GitHub Action - SCA &amp; Secret Scanning (Insomnia)</h1>
 
 <p align="center">
-  Catch hardcoded secrets &amp; code vulnerabilities on every push — in one line of YAML.<br>
+  Free <b>SAST</b> + <b>SCA</b> + secret scanning - catch code vulnerabilities &amp; hardcoded secrets on every push — in one line of YAML.<br>
   Findings land straight in your <b>GitHub Security tab</b>. No account, no upload, nothing to install.
 </p>
 
 <p align="center">
-  <a href="https://github.com/marketplace/actions/vulnerability"><img src="https://img.shields.io/badge/GitHub%20Marketplace-vulnz%2Fvulnerability-7c3aed?logo=github" alt="GitHub Marketplace"></a>
+  <a href="https://github.com/marketplace/actions/sast-by-insomnia"><img src="https://img.shields.io/badge/GitHub%20Marketplace-vulnz%2Fvulnerability-7c3aed?logo=github" alt="GitHub Marketplace"></a>
   <img src="https://img.shields.io/badge/output-SARIF%202.1.0-2563eb" alt="SARIF 2.1.0">
   <img src="https://img.shields.io/badge/runners-Linux%20·%20macOS%20·%20Windows-64748b" alt="Runners">
   <img src="https://img.shields.io/badge/price-free-16a34a" alt="Free">
