@@ -1,4 +1,4 @@
-name: 'SAST by Insomnia'
+name: 'SAST Scanner'
 description: 'Free, fast SAST + SCA + secret scanning for CI. AST taint across 16 languages, SARIF to the GitHub Security tab.'
 author: 'CQR Cybersecurity LLC (insom.ai)'
 
