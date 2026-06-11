@@ -1,0 +1,141 @@
+name: 'Insomnia SAST'
+description: 'Free, fast SAST + SCA + secret scanning for CI. Native AST taint across 16 languages, SARIF for the GitHub Security tab. No external tools.'
+author: 'CQR Cybersecurity LLC (insom.ai)'
+
+branding:
+  icon: 'shield'
+  color: 'purple'
+
+inputs:
+  path:
+    description: 'Directory to scan (relative to the repo root).'
+    required: false
+    default: '.'
+  fail-on:
+    description: >-
+      Fail the job (exit 2) if any finding is at or above this severity:
+      critical | high | medium | low | info. Leave empty to report without
+      failing the build.
+    required: false
+    default: ''
+  format:
+    description: >-
+      Comma-separated report formats: html, json, sarif. SARIF is always
+      produced so it can be uploaded to the GitHub Security tab.
+    required: false
+    default: 'sarif,json,html'
+  output:
+    description: 'Directory to write report files into.'
+    required: false
+    default: 'sast-report'
+  upload-sarif:
+    description: >-
+      Upload the SARIF report to GitHub code scanning (Security tab).
+      Requires `security-events: write` permission on the job.
+    required: false
+    default: 'true'
+  secrets-only:
+    description: 'Only scan for secrets / hardcoded credentials (fast).'
+    required: false
+    default: 'false'
+  no-sca:
+    description: 'Skip the dependency CVE / dependency-confusion (SCA) pass.'
+    required: false
+    default: 'false'
+  changed-only:
+    description: 'Scan only files changed vs the git HEAD (incremental). Requires a checkout with history.'
+    required: false
+    default: 'false'
+  version:
+    description: 'Engine channel/version to download (default: latest).'
+    required: false
+    default: 'latest'
+  args:
+    description: 'Extra raw flags passed verbatim to the sast CLI (advanced).'
+    required: false
+    default: ''
+
+outputs:
+  sarif-file:
+    description: 'Path to the generated SARIF report.'
+    value: ${{ steps.scan.outputs.sarif-file }}
+  exit-code:
+    description: 'The sast CLI exit code (0 clean / 2 findings at-or-above fail-on / 1 error).'
+    value: ${{ steps.scan.outputs.exit-code }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Insomnia SAST engine
+      shell: bash
+      run: |
+        set -euo pipefail
+        case "${RUNNER_OS}" in
+          Linux)   PLAT=linux;   BIN="$RUNNER_TEMP/sast" ;;
+          macOS)   PLAT=macos;   BIN="$RUNNER_TEMP/sast" ;;
+          Windows) PLAT=windows; BIN="$RUNNER_TEMP/sast.exe" ;;
+          *) echo "::error::Unsupported runner OS: ${RUNNER_OS}"; exit 1 ;;
+        esac
+        CHANNEL="${{ inputs.version }}"
+        if [ "$CHANNEL" = "latest" ] || [ -z "$CHANNEL" ]; then
+          URL="https://insom.ai/latest/sast/${PLAT}"
+        else
+          URL="https://insom.ai/latest/sast/${PLAT}?version=${CHANNEL}"
+        fi
+        echo "Downloading Insomnia SAST engine ($PLAT) from $URL"
+        curl -fsSL --retry 3 "$URL" -o "$BIN"
+        chmod +x "$BIN" || true
+        echo "SAST_BIN=$BIN" >> "$GITHUB_ENV"
+        "$BIN" --version || true
+
+    - name: Run Insomnia SAST
+      id: scan
+      shell: bash
+      run: |
+        set -uo pipefail
+        ARGS=( "${{ inputs.path }}" --no-banner -o "${{ inputs.output }}" )
+
+        FMT="${{ inputs.format }}"
+        case ",$FMT," in *,sarif,*) ;; *) FMT="${FMT},sarif" ;; esac
+        ARGS+=( --format "$FMT" )
+
+        [ -n "${{ inputs.fail-on }}" ] && ARGS+=( --fail-on "${{ inputs.fail-on }}" )
+        [ "${{ inputs.secrets-only }}" = "true" ] && ARGS+=( --secrets-only )
+        [ "${{ inputs.no-sca }}" = "true" ]       && ARGS+=( --no-sca )
+        [ "${{ inputs.changed-only }}" = "true" ] && ARGS+=( --changed )
+        [ -n "${{ inputs.args }}" ] && ARGS+=( ${{ inputs.args }} )
+
+        echo "+ sast ${ARGS[*]}"
+        set +e
+        "$SAST_BIN" "${ARGS[@]}"
+        CODE=$?
+        set -e
+        echo "exit-code=$CODE" >> "$GITHUB_OUTPUT"
+
+        # The engine writes a timestamped report name (sast_report_<ts>.sarif);
+        # resolve the newest .sarif in the output dir rather than hardcoding it.
+        SARIF="$(ls -t "${{ inputs.output }}"/*.sarif 2>/dev/null | head -n1 || true)"
+        if [ -n "$SARIF" ]; then
+          echo "sarif-file=$SARIF" >> "$GITHUB_OUTPUT"
+          echo "SARIF report: $SARIF"
+        else
+          echo "::warning::No SARIF report was produced."
+        fi
+
+        # Re-raise the gating exit code so the job fails when fail-on triggers.
+        exit $CODE
+
+    - name: Upload SARIF to GitHub code scanning
+      if: ${{ always() && inputs.upload-sarif == 'true' && steps.scan.outputs.sarif-file != '' }}
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif-file }}
+
+    - name: Upload SAST report artifact
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: insomnia-sast-report
+        path: ${{ inputs.output }}/
+        if-no-files-found: ignore
+        retention-days: 30

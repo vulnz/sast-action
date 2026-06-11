@@ -1,0 +1,23 @@
+# Example consumer workflow — copy this into your own repo at
+# .github/workflows/sast.yml to scan it with Insomnia SAST.
+name: SAST
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write   # required to publish findings to the Security tab
+
+jobs:
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: vulnz/sast-action@v1
+        with:
+          path: .
+          fail-on: high
