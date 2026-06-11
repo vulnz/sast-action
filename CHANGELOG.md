@@ -1,7 +1,6 @@
 # Changelog
 
 ## 1.6.11
-- Action renamed to **SAST** on the GitHub Marketplace.
 - Engine now installed via `pip install sast` (replaces the direct binary download).
 - Crescent **moon** brand icon (purple).
 
