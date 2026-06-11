@@ -1,58 +1,38 @@
 <p align="center">
   <a href="https://insom.ai/en/sdlc">
-    <img src="https://insom.ai/static/img/logo.png" width="92" alt="Insomnia">
+    <img src="https://insom.ai/static/img/logo.png" width="80" alt="Insomnia">
   </a>
 </p>
 
 <h1 align="center">Insomnia SAST — GitHub Action</h1>
 
 <p align="center">
-  <b>Catch hardcoded secrets &amp; code vulnerabilities on every push — in one line of YAML.</b><br>
-  Native AST taint across <b>16 languages</b>, secrets with <i>live key validation</i>, SCA, IaC &amp; container CVEs —
-  results land straight in your <b>GitHub Security tab</b>. No external service, no account, nothing to upload.
+  Catch hardcoded secrets &amp; code vulnerabilities on every push — in one line of YAML.<br>
+  Findings land straight in your <b>GitHub Security tab</b>. No account, no upload, nothing to install.
 </p>
 
 <p align="center">
-  <a href="https://github.com/marketplace/actions/insomnia-sast">
-    <img src="https://img.shields.io/badge/Get%20it%20on-GitHub%20Marketplace-7c3aed?style=for-the-badge&logo=github&logoColor=white" alt="Get it on the GitHub Marketplace">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/marketplace/actions/insomnia-sast"><img src="https://img.shields.io/badge/marketplace-vulnz%2Fsast--action%40v1-7c3aed?logo=github" alt="Marketplace"></a>
-  <a href="https://pypi.org/project/sast/"><img src="https://img.shields.io/pypi/v/sast?label=pip%20install%20sast&color=16a34a&logo=python&logoColor=white" alt="PyPI"></a>
-  <img src="https://img.shields.io/badge/languages-16-2563eb" alt="16 languages">
+  <a href="https://github.com/marketplace/actions/insomnia-sast"><img src="https://img.shields.io/badge/GitHub%20Marketplace-vulnz%2Fsast--action-7c3aed?logo=github" alt="GitHub Marketplace"></a>
   <img src="https://img.shields.io/badge/output-SARIF%202.1.0-2563eb" alt="SARIF 2.1.0">
-  <img src="https://img.shields.io/badge/runners-Linux%20%C2%B7%20macOS%20%C2%B7%20Windows-64748b" alt="Runners">
+  <img src="https://img.shields.io/badge/runners-Linux%20·%20macOS%20·%20Windows-64748b" alt="Runners">
   <img src="https://img.shields.io/badge/price-free-16a34a" alt="Free">
 </p>
 
 <p align="center">
-  <a href="https://insom.ai/en/sdlc"><b>Pipeline builder</b></a> ·
-  <a href="https://insom.ai/en/sdlc"><b>SDLC pipeline</b></a> ·
-  <a href="https://insom.ai/en/plugin"><b>IDE plugins</b></a> ·
-  <a href="https://insom.ai/api/plugin/manifest">Manifest</a>
+  <a href="https://insom.ai/en/sdlc">Pipeline builder</a> ·
+  <a href="https://insom.ai/en/plugin">IDE plugins</a> ·
+  <a href="https://www.youtube.com/watch?v=KrmuPx_3ZSA">Watch the video</a>
 </p>
-
----
-
-## ▶ See it in action
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=KrmuPx_3ZSA" title="Watch the Insomnia SAST overview on YouTube">
-    <img src="https://img.youtube.com/vi/KrmuPx_3ZSA/maxresdefault.jpg" width="640" alt="Watch the Insomnia SAST overview video on YouTube">
+  <a href="https://www.youtube.com/watch?v=KrmuPx_3ZSA" title="Watch the Insomnia SAST overview">
+    <img src="https://img.youtube.com/vi/KrmuPx_3ZSA/maxresdefault.jpg" width="560" alt="Watch the Insomnia SAST overview video">
   </a>
-  <br>
-  <a href="https://www.youtube.com/watch?v=KrmuPx_3ZSA"><b>▶ Watch the overview on YouTube</b></a>
-  &nbsp;·&nbsp;
-  <a href="https://insom.ai/en/sdlc">Read the full SDLC walkthrough →</a>
 </p>
 
----
+## Quick start
 
-## 🚀 Quick start
-
-Drop this into `.github/workflows/sast.yml`:
+Add `.github/workflows/sast.yml`:
 
 ```yaml
 name: SAST
@@ -63,7 +43,7 @@ on:
 
 permissions:
   contents: read
-  security-events: write   # lets findings show up in the Security tab
+  security-events: write   # lets findings show in the Security tab
 
 jobs:
   sast:
@@ -75,132 +55,85 @@ jobs:
           fail-on: high
 ```
 
-That's it. The action downloads the OS-matched engine, scans your repo, **fails the
-build on high-severity findings**, uploads **SARIF to the Security tab**, and attaches the
-HTML/JSON report as an artifact — replacing the ~40-line install-and-run block you'd
-otherwise copy-paste.
+The action downloads the OS-matched engine, scans the repo, fails the build on high-severity
+findings, uploads SARIF to the Security tab, and saves the HTML/JSON report as an artifact.
 
-> 🧩 **Prefer to build it visually?** Generate a full pipeline — targets, formats, scan policy,
-> schedule and notifications — with the **[Pipeline Builder / Wizard → insom.ai/en/sdlc](https://insom.ai/en/sdlc)**,
-> then copy the YAML straight into your repo.
+> Prefer to build your pipeline visually? Generate the YAML with the
+> **[Pipeline Builder → insom.ai/en/sdlc](https://insom.ai/en/sdlc)**.
 
----
+## What it covers
 
-## 🥇 How it compares
+One step instead of five tools — all on your runner, nothing leaves CI:
 
-One action instead of stitching five tools together. Everything below runs in a single
-step, fully on your runner — no SaaS account, no code leaving CI.
+- **SAST** — cross-file taint (source → sink) across **16 languages**
+- **Secrets** — ~230 rules, with **live validation** that proves whether a key still works
+- **SCA** — dependency CVEs (OSV) + dependency-confusion
+- **Containers & IaC** — OS-package CVEs, Terraform / Kubernetes / Docker / CloudFormation misconfig
+- **More** — CMS advisories (WordPress/Joomla/Drupal/Magento), vulnerable JS libs, web-shell / malware
+- **Output** — SARIF 2.1.0, JSON and HTML
 
-| Capability | **Insomnia SAST** | CodeQL Action | Semgrep OSS | Snyk | Trivy | Gitleaks |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| One-line `uses:` setup | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Free on **private** repos | ✅ | ⚠️ GHAS only | ✅ | ⚠️ limited | ✅ | ✅ |
-| No account / no upload to a service | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
-| Cross-file **taint** (source → sink) | ✅ 16 langs | ✅ fewer langs | ⚠️ intra-file | ✅ | ❌ | ❌ |
-| Secret / credential detection | ✅ ~230 rules | ❌ | ⚠️ add-on | ✅ | ✅ | ✅ |
-| **Live** secret validation (proves the key works) | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Dependency CVEs (SCA) | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
-| Container / OS-package CVEs | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
-| IaC misconfig (Terraform/K8s/Docker/CFN) | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ |
-| CMS advisories (WordPress/Joomla/Drupal/Magento) | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Web-shell / malware detection | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| SARIF → GitHub Security tab | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+## How it compares
 
-<sub>✅ built in · ⚠️ partial / conditional · ❌ not available. Comparison reflects each tool's free/OSS GitHub Action as of 2026; competitor names are trademarks of their owners.</sub>
+| | Insomnia&nbsp;SAST | CodeQL | Semgrep | Snyk | Trivy |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Free on private repos | ✅ | ⚠️ | ✅ | ⚠️ | ✅ |
+| Runs fully on your runner | ✅ | ✅ | ✅ | ❌ | ✅ |
+| Cross-file taint | ✅ | ✅ | ⚠️ | ✅ | ❌ |
+| Secret detection | ✅ | ❌ | ⚠️ | ✅ | ✅ |
+| Live secret validation | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Dependency / container CVEs | ✅ | ❌ | ❌ | ✅ | ✅ |
+| IaC misconfig | ✅ | ❌ | ✅ | ✅ | ✅ |
+| CMS / web-shell / malware | ✅ | ❌ | ❌ | ❌ | ❌ |
 
----
+<sub>✅ built in · ⚠️ partial or conditional · ❌ not available. Names are trademarks of their owners.</sub>
 
-## ⚙️ Inputs
+## Inputs
 
 | Input | Default | Description |
 |---|---|---|
-| `path` | `.` | Directory to scan (relative to the repo root). |
-| `fail-on` | _(empty)_ | Fail the job (exit 2) at/above this severity: `critical`/`high`/`medium`/`low`/`info`. Empty = report only. |
-| `format` | `sarif,json,html` | Comma-separated report formats. `sarif` is always included. |
-| `output` | `sast-report` | Directory for report files. |
+| `path` | `.` | Directory to scan. |
+| `fail-on` | _(empty)_ | Fail the job at/above this severity: `critical`/`high`/`medium`/`low`/`info`. Empty = report only. |
+| `format` | `sarif,json,html` | Report formats (`sarif` is always included). |
+| `output` | `sast-report` | Report output directory. |
 | `upload-sarif` | `true` | Upload SARIF to GitHub code scanning (needs `security-events: write`). |
-| `secrets-only` | `false` | Only scan for secrets / hardcoded credentials (fast). |
-| `no-sca` | `false` | Skip the dependency CVE / dependency-confusion (SCA) pass. |
-| `changed-only` | `false` | Scan only files changed vs git HEAD (incremental). |
-| `version` | `latest` | Engine channel/version to download. |
-| `args` | _(empty)_ | Extra raw flags passed verbatim to the `sast` CLI. |
+| `secrets-only` | `false` | Only scan for secrets / credentials (fast). |
+| `no-sca` | `false` | Skip the dependency CVE (SCA) pass. |
+| `changed-only` | `false` | Scan only files changed vs git HEAD. |
+| `version` | `latest` | Engine version to download. |
+| `args` | _(empty)_ | Extra raw flags for the `sast` CLI. |
 
-## 📤 Outputs
+**Outputs:** `sarif-file` (path to the SARIF report) · `exit-code` (`0` clean / `2` gated / `1` error).
 
-| Output | Description |
-|---|---|
-| `sarif-file` | Path to the generated SARIF report. |
-| `exit-code` | CLI exit code: `0` clean · `2` findings at/above `fail-on` · `1` error. |
-
----
-
-## 🧪 More recipes
-
-**Pull-request gate — only the changed files, fail on high:**
+## Examples
 
 ```yaml
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-      - uses: vulnz/sast-action@v1
-        with:
-          changed-only: true
-          fail-on: high
+# PR gate — changed files only, fail on high
+- uses: actions/checkout@v4
+  with: { fetch-depth: 0 }
+- uses: vulnz/sast-action@v1
+  with: { changed-only: true, fail-on: high }
 ```
-
-**Fast secrets-only pre-merge check:**
 
 ```yaml
-      - uses: vulnz/sast-action@v1
-        with:
-          secrets-only: true
-          fail-on: medium
+# Fast secrets-only check
+- uses: vulnz/sast-action@v1
+  with: { secrets-only: true, fail-on: medium }
 ```
 
-**Report only (never fail the build), keep the HTML artifact:**
-
-```yaml
-      - uses: vulnz/sast-action@v1
-        with:
-          format: sarif,html
-```
-
-**Use an output in a later step:**
-
-```yaml
-      - id: sast
-        uses: vulnz/sast-action@v1
-      - run: echo "SARIF written to ${{ steps.sast.outputs.sarif-file }} (exit ${{ steps.sast.outputs.exit-code }})"
-```
-
----
-
-## 🛡️ One engine, everything covered
-
-Multi-language **SAST + taint** (16 languages), **secrets with live key validation**,
-**dependency/SCA CVEs**, container &amp; OS-package CVEs, **IaC** misconfig, **CMS** advisories,
-vulnerable JS libraries, and **web-shell / malware** detection — exported as **SARIF / JSON / HTML**.
-
-The exact same engine powers `pip install sast`, the npm launcher, and the
-[VS Code / JetBrains / Visual Studio plugins](https://insom.ai/en/plugin) — so there's
-**zero rule drift** between a developer's editor, the terminal, and your CI.
+## Same engine, everywhere
 
 | Where | How |
 |---|---|
-| **CI / CD** | this action · `uses: vulnz/sast-action@v1` |
-| **Terminal / any CI** | `pip install sast` · `brew install vulnz/sast/sast` · `apt-get install sast` |
-| **Editor** | [VS Code · JetBrains · Visual Studio](https://insom.ai/en/plugin) |
+| CI / CD | `uses: vulnz/sast-action@v1` |
+| Terminal | `pip install sast` · `brew install vulnz/sast/sast` · `apt-get install sast` |
+| Editor | [VS Code · JetBrains · Visual Studio](https://insom.ai/en/plugin) |
 
----
-
-## 🔐 Permissions &amp; runners
-
-- Set `security-events: write` on the job for the Security-tab upload (set `upload-sarif: false` to skip it).
-- Runs on `ubuntu-*`, `macos-*` and `windows-*` runners — the engine binary is auto-matched to the runner OS and fetched from `https://insom.ai/latest/sast/<os>`.
+Runs on `ubuntu-*`, `macos-*` and `windows-*` runners.
 
 ---
 
 <p align="center">
-  <a href="https://insom.ai/en/sdlc"><b>insom.ai/en/sdlc</b></a> ·
-  <a href="https://insom.ai/en/plugin"><b>insom.ai/en/plugin</b></a><br>
-  <sub>Free · same engine as the Insomnia CI pipeline, CLI &amp; IDE plugins · © CQR Cybersecurity LLC</sub>
+  <a href="https://insom.ai/en/sdlc">insom.ai/en/sdlc</a> ·
+  <a href="https://insom.ai/en/plugin">insom.ai/en/plugin</a><br>
+  <sub>Free · same engine as the Insomnia CLI &amp; IDE plugins · © CQR Cybersecurity LLC</sub>
 </p>
