@@ -101,6 +101,7 @@ One step instead of five tools — all on your runner, nothing leaves CI:
 | `changed-only` | `false` | Scan only files changed vs git HEAD. |
 | `version` | `latest` | Engine version to download. |
 | `args` | _(empty)_ | Extra raw flags for the `sast` CLI. |
+| `artifact-name` | `insomnia-sast-report` | Name of the uploaded report artifact (give each matrix job a unique value). |
 
 **Outputs:** `sarif-file` (path to the SARIF report) · `exit-code` (`0` clean / `2` gated / `1` error).
 

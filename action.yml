@@ -54,6 +54,12 @@ inputs:
     description: 'Extra raw flags passed verbatim to the sast CLI (advanced).'
     required: false
     default: ''
+  artifact-name:
+    description: >-
+      Name of the uploaded report artifact. Give each job a unique value when
+      running this action in a matrix, otherwise the artifacts collide.
+    required: false
+    default: 'insomnia-sast-report'
 
 outputs:
   sarif-file:
@@ -131,7 +137,7 @@ runs:
       if: ${{ always() }}
       uses: actions/upload-artifact@v4
       with:
-        name: insomnia-sast-report
+        name: ${{ inputs.artifact-name }}
         path: ${{ inputs.output }}/
         if-no-files-found: ignore
         retention-days: 30
