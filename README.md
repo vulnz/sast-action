@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/marketplace/actions/insomnia-sast"><img src="https://img.shields.io/badge/GitHub%20Marketplace-vulnz%2Fsast--action-7c3aed?logo=github" alt="GitHub Marketplace"></a>
+  <a href="https://github.com/marketplace/actions/vulnerability"><img src="https://img.shields.io/badge/GitHub%20Marketplace-vulnz%2Fvulnerability-7c3aed?logo=github" alt="GitHub Marketplace"></a>
   <img src="https://img.shields.io/badge/output-SARIF%202.1.0-2563eb" alt="SARIF 2.1.0">
   <img src="https://img.shields.io/badge/runners-Linux%20·%20macOS%20·%20Windows-64748b" alt="Runners">
   <img src="https://img.shields.io/badge/price-free-16a34a" alt="Free">
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: vulnz/sast-action@v1
+      - uses: vulnz/vulnerability@v1
         with:
           fail-on: high
 ```
@@ -110,13 +110,13 @@ One step instead of five tools — all on your runner, nothing leaves CI:
 # PR gate — changed files only, fail on high
 - uses: actions/checkout@v4
   with: { fetch-depth: 0 }
-- uses: vulnz/sast-action@v1
+- uses: vulnz/vulnerability@v1
   with: { changed-only: true, fail-on: high }
 ```
 
 ```yaml
 # Fast secrets-only check
-- uses: vulnz/sast-action@v1
+- uses: vulnz/vulnerability@v1
   with: { secrets-only: true, fail-on: medium }
 ```
 
@@ -124,7 +124,7 @@ One step instead of five tools — all on your runner, nothing leaves CI:
 
 | Where | How |
 |---|---|
-| CI / CD | `uses: vulnz/sast-action@v1` |
+| CI / CD | `uses: vulnz/vulnerability@v1` |
 | Terminal | `pip install sast` · `brew install vulnz/sast/sast` · `apt-get install sast` |
 | Editor | [VS Code · JetBrains · Visual Studio](https://insom.ai/en/plugin) |
 

@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: vulnz/sast-action@v1
+      - uses: vulnz/vulnerability@v1
         with:
           path: .
           fail-on: high
